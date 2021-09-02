@@ -23,8 +23,8 @@ direction_list.add(types.InlineKeyboardButton('Спорт и туризм', call
 organization_list = dict()
 for direction in direction_list['inline_keyboard']:
     kb = types.InlineKeyboardMarkup()
-    key = ' '.join(direction.get('callback_data').split('_'))
+    key = ' '.join(direction[0]['callback_data'].split('_'))
     for org in organizations.get(key):
         index = organizations.get(key).index(org)
         kb.add(types.InlineKeyboardButton(org.get('name'), callback_data=f'{"_".join(key.split(" "))}_{index}'))
-    organization_list[direction] = kb
+    organization_list[key] = kb
