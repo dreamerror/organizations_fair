@@ -34,6 +34,8 @@ async def get_question_answer(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')) in organizations.keys())
 async def organizations_list(callback_query: types.CallbackQuery):
+    keyboard = kb.organization_list[callback_query.data]
+    keyboard.add(types.InlineKeyboardButton('Назад', callback_data='back'))
     await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
                                 text='пока заглушка', reply_markup=kb.organization_list[callback_query.data])
 
