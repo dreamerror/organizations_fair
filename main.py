@@ -15,28 +15,27 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
-    await message.answer('Список организаций', reply_markup=kb.test_keyboards[0])
+    await message.answer(messages.get('welcome'), reply_markup=kb.welcome)
     await shutdown(dp)
 
 
-@dp.callback_query_handler(lambda c: 'next' in c.data)
-async def next_page(callback_query: types.CallbackQuery):
-    index = int(callback_query.data.split('_')[-1])
+@dp.callback_query_handler(lambda c: c.data == 'welcome')
+async def welcome_question_ask(callback_query: types.CallbackQuery):
     await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                text=callback_query.message.text, reply_markup=kb.test_keyboards[index + 1])
-    await shutdown(dp)
+                                text=messages['question'], reply_markup=kb.question)
 
 
-@dp.callback_query_handler(lambda c: 'back' in c.data)
-async def prev_page(callback_query: types.CallbackQuery):
-    if len(callback_query.data.split('_')) == 1:
-        await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                    text='Список организаций', reply_markup=kb.test_keyboards[0])
-    else:
-        index = int(callback_query.data.split('_')[-1])
-        await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                    text=callback_query.message.text, reply_markup=kb.test_keyboards[index - 1])
-    await shutdown(dp)
+@dp.callback_query_handler(lambda c: c.data in ('wrong', 'right'))
+async def get_question_answer(callback_query: types.CallbackQuery):
+    data = callback_query.data
+    await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
+                                text=messages[data], reply_markup=kb.direction_list)
+
+
+@dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')) in organizations.keys())
+async def organizations_list(callback_query: types.CallbackQuery):
+    await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
+                                text='пока заглушка', reply_markup=kb.organization_list[callback_query.data])
 
 
 @dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')[:-1]) in organizations.keys())
