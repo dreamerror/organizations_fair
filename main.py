@@ -38,13 +38,25 @@ async def organizations_list(callback_query: types.CallbackQuery):
                                 text='пока заглушка', reply_markup=kb.organization_list[callback_query.data])
 
 
+@dp.callback_query_handler(lambda c: 'back' in c.data)
+async def go_back(callback_query: types.CallbackQuery):
+    if callback_query.data != 'back':
+        data = callback_query.data.replace('back_', '')
+        await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
+                                    text='пока заглушка', reply_markup=kb.organization_list[data])
+    else:
+        await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
+                                    text='пока заглушка', reply_markup=kb.organization_list[callback_query.data])
+
+
 @dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')[:-1]) in organizations.keys())
 async def show_organisation(callback_query: types.CallbackQuery):
     index = int(callback_query.data.split('_')[-1])
     org = kb.organizations.get(' '.join(callback_query.data.split('_')[:-1]))[index]
+    direction = '_'.join(callback_query.data.split('_')[:-1])
     new_kb = types.InlineKeyboardMarkup()
     new_kb.add(types.InlineKeyboardButton('Страница организации', callback_data='org', url=org.get('url')))
-    new_kb.add(types.InlineKeyboardButton('Назад', callback_data='back'))
+    new_kb.add(types.InlineKeyboardButton('Назад', callback_data=f'back_{direction}'))
     new_text = f'{org.get("name")}'
     if org.get('description'):
         new_text += f'\n\n{org.get("description")}'
