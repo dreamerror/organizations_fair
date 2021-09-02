@@ -1,13 +1,12 @@
 import os
-import json
 
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
-from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 import keyboards as kb
+from text import organizations, messages
 
 TOKEN = os.getenv('TOKEN')
 bot = Bot(token=TOKEN)
@@ -40,7 +39,7 @@ async def prev_page(callback_query: types.CallbackQuery):
     await shutdown(dp)
 
 
-@dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')[:-1]) in kb.organizations.keys())
+@dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')[:-1]) in organizations.keys())
 async def show_organisation(callback_query: types.CallbackQuery):
     index = int(callback_query.data.split('_')[-1])
     org = kb.organizations.get(' '.join(callback_query.data.split('_')[:-1]))[index]

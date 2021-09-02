@@ -1,10 +1,7 @@
-import json
-
 from aiogram import types
 
+from text import organizations
 
-with open('organizations.json', 'r', encoding='utf-8') as orgs:
-    organizations = json.loads('\n'.join(orgs.readlines()))
 
 test_keyboards = list()
 for key in organizations.keys():
