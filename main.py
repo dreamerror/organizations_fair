@@ -48,7 +48,7 @@ async def go_back(callback_query: types.CallbackQuery):
                                     text='пока заглушка', reply_markup=kb.organization_list[data])
     else:
         await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                    text='пока заглушка', reply_markup=kb.organization_list[callback_query.data])
+                                    text='пока заглушка', reply_markup=kb.direction_list)
 
 
 @dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')[:-1]) in organizations.keys())
