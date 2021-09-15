@@ -36,7 +36,7 @@ for direction in direction_list['inline_keyboard']:
     for org in organizations.get(key):
         index = organizations.get(key).index(org)
         all_orgs[index] = key
-        if org.get('url') == '':
+        if not org.get('url'):
             add = False
         kb.add(types.InlineKeyboardButton(org.get('name'), callback_data=f'{"_".join(key.split(" "))}_{index}'))
     if add:
