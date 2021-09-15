@@ -30,14 +30,11 @@ direction_list.add(types.InlineKeyboardButton('Другое', callback_data='oth
 organization_list = dict()
 all_orgs = dict()
 for direction in direction_list['inline_keyboard']:
-    add = True
     kb = types.InlineKeyboardMarkup()
     key = ' '.join(direction[0]['callback_data'].split('_'))
     for org in organizations.get(key):
         index = organizations.get(key).index(org)
         all_orgs[index] = key
-        if not org.get('url'):
-            add = False
-        kb.add(types.InlineKeyboardButton(org.get('name'), callback_data=f'{"_".join(key.split(" "))}_{index}'))
-    if add:
-        organization_list[key] = kb
+        if org.get('url'):
+            kb.add(types.InlineKeyboardButton(org.get('name'), callback_data=f'{"_".join(key.split(" "))}_{index}'))
+    organization_list[key] = kb
