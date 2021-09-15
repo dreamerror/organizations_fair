@@ -42,7 +42,7 @@ async def get_question_answer(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')) in organizations.keys())
 async def organizations_list(callback_query: types.CallbackQuery):
-    keyboard = kb.organization_list[callback_query.data]
+    keyboard = kb.organization_list[' '.join(callback_query.data.split('_'))]
     keyboard.add(types.InlineKeyboardButton('Назад', callback_data='back'))
     text = organizations.get(callback_query.data)[-1].get('name')
     text += '\n\n' + organizations.get(callback_query.data)[-1].get('description')
