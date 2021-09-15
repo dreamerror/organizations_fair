@@ -45,7 +45,7 @@ async def organizations_list(callback_query: types.CallbackQuery):
     keyboard = kb.organization_list[' '.join(callback_query.data.split('_'))]
     keyboard.add(types.InlineKeyboardButton('Назад', callback_data='back'))
     text = organizations.get(' '.join(callback_query.data.split('_')))[-1].get('name')
-    text += '\n\n' + organizations.get(callback_query.data)[-1].get('description')
+    text += '\n\n' + organizations.get(' '.join(callback_query.data.split('_')))[-1].get('description')
     await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
                                 text=text, reply_markup=kb.organization_list[callback_query.data])
 
