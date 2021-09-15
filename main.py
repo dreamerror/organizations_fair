@@ -17,7 +17,8 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
-    if datetime.now() <= datetime(2021, 9, 16, 18, 0, 0, 0, tzinfo=pytz.timezone('Asia/Vladivostok')):
+    now = pytz.utc.localize(datetime.now())
+    if now <= datetime(2021, 9, 16, 18, 0, 0, 0, tzinfo=pytz.timezone('Asia/Vladivostok')):
         await bot.send_message(message.from_user.id, text='16 сентября с 15:30 до 18:00 на '
                                                           'спортивных площадках кампуса '
                                                           'двфу пройдёт ярмарка студенческих организаций. '
