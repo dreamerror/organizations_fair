@@ -1,4 +1,6 @@
 import os
+import pytz
+from datetime import datetime, tzinfo
 
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
@@ -15,6 +17,11 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
+    if datetime.now() <= datetime(2021, 9, 16, 18, 0, 0, 0, tzinfo=pytz.timezone('Asia/Vladivostok')):
+        await bot.send_message(message.from_user.id, text='16 сентября с 15:30 до 18:00 на '
+                                                          'спортивных площадках кампуса '
+                                                          'двфу пройдёт ярмарка студенческих организаций. '
+                                                          'Мы приглашаем тебя! До встречи!')
     await message.answer(messages.get('welcome'), reply_markup=kb.welcome)
     await shutdown(dp)
 
@@ -36,19 +43,22 @@ async def get_question_answer(callback_query: types.CallbackQuery):
 async def organizations_list(callback_query: types.CallbackQuery):
     keyboard = kb.organization_list[callback_query.data]
     keyboard.add(types.InlineKeyboardButton('Назад', callback_data='back'))
+    text = organizations.get(callback_query.data)[-1].get('name')
+    text += '\n\n' + organizations.get(callback_query.data)[-1].get('description')
     await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                text='пока заглушка', reply_markup=kb.organization_list[callback_query.data])
+                                text=text, reply_markup=kb.organization_list[callback_query.data])
 
 
 @dp.callback_query_handler(lambda c: 'back' in c.data)
 async def go_back(callback_query: types.CallbackQuery):
     if callback_query.data != 'back':
         data = callback_query.data.replace('back_', '')
+        text = organizations.get(' '.join(kb.all_orgs.get(int(data)).split('_')))[-1].get('description')
         await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                    text='пока заглушка', reply_markup=kb.organization_list[data])
+                                    text=text, reply_markup=kb.organization_list[data])
     else:
         await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                    text='пока заглушка', reply_markup=kb.direction_list)
+                                    text='Список направлений', reply_markup=kb.direction_list)
 
 
 @dp.callback_query_handler(lambda c: ' '.join(c.data.split('_')[:-1]) in organizations.keys())
