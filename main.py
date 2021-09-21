@@ -1,6 +1,4 @@
 import os
-import pytz
-from datetime import datetime, tzinfo
 
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
@@ -17,12 +15,6 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
-    now = pytz.utc.localize(datetime.now())
-    if now <= datetime(2021, 9, 23, 18, 0, 0, 0, tzinfo=pytz.timezone('Asia/Vladivostok')):
-        await bot.send_message(message.from_user.id, text='23 сентября с 15:00 до 18:00 на '
-                                                          'спортивных площадках кампуса '
-                                                          'двфу пройдёт ярмарка студенческих организаций. '
-                                                          'Мы приглашаем тебя! До встречи!')
     await message.answer(messages.get('welcome'), reply_markup=kb.welcome)
     await shutdown(dp)
 
