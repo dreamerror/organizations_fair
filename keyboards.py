@@ -25,6 +25,7 @@ direction_list.add(types.InlineKeyboardButton('Медиа сообщества',
 direction_list.add(types.InlineKeyboardButton('Игры', callback_data='games'))
 direction_list.add(types.InlineKeyboardButton('Международное развитие', callback_data='international'))
 direction_list.add(types.InlineKeyboardButton('Волонтёрское движение', callback_data='volunteer'))
+direction_list.add(types.InlineKeyboardButton('Студенческие содружества', callback_data='student_cooperation'))
 direction_list.add(types.InlineKeyboardButton('Другое', callback_data='other'))
 
 organization_list = dict()
