@@ -53,7 +53,7 @@ async def organizations_list(callback_query: types.CallbackQuery):
 async def go_back(callback_query: types.CallbackQuery):
     if callback_query.data != 'back':
         data = callback_query.data.replace('back_', '')
-        text = organizations.get(' '.join(kb.all_orgs.get(data).split('_')))[-1].get('description')
+        text = organizations.get(' '.join(data.split('_')))[-1].get('description')
         keyboard = kb.organization_list.get(text)
         await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
                                     text=text, reply_markup=keyboard)
