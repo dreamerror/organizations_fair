@@ -48,7 +48,7 @@ async def master_class(callback_query: types.CallbackQuery):
     back_kb.add(types.InlineKeyboardButton('Назад', callback_data='return'))
     await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
                                 text=text, reply_markup=back_kb)
-    image = types.InputMediaPhoto('images/schedule.jpg')
+    image = types.InputMediaPhoto('attach://images/schedule.jpg')
     await bot.edit_message_media(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
                                  media=image)
 
