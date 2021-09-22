@@ -3,6 +3,12 @@ from aiogram import types
 from text import organizations
 
 
+start = types.InlineKeyboardMarkup()
+start.add(types.InlineKeyboardButton('Расположение организаций на ярмарке', callback_data='where'))
+start.add(types.InlineKeyboardButton('Мастер-классы студенческих объединений', callback_data='master_class'))
+start.add(types.InlineKeyboardButton('Сайт организаций', url='http://fairfefu.tilda.ws/organizations'))
+
+
 welcome = types.InlineKeyboardMarkup()
 welcome.add(types.InlineKeyboardButton('Конечно!', callback_data='welcome'))
 welcome.add(types.InlineKeyboardButton('Да, давай!', callback_data='welcome'))
