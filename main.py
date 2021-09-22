@@ -28,13 +28,7 @@ async def welcome_question_ask(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: c.data == 'where')
 async def fair_schema(callback_query: types.CallbackQuery):
-    back_kb = types.InlineKeyboardMarkup()
-    back_kb.add(types.InlineKeyboardButton('Назад', callback_data='return'))
-    await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                text='Расположение организаций', reply_markup=back_kb)
-    image = types.InputMediaPhoto('images/where.jpg')
-    await bot.edit_message_media(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                 media=image)
+    await bot.send_photo(chat_id=callback_query.from_user.id, photo='images/where.jpg')
 
 
 @dp.callback_query_handler(lambda c: c.data == 'master_class')
@@ -45,12 +39,9 @@ async def master_class(callback_query: types.CallbackQuery):
                                                                         '%2Fdocs.google.com%2Fforms%2Fd%2Fe'
                                                                         '%2F1FAIpQLSe41SL3EJsROLWtco7K2ACsX339S'
                                                                         'yIKn2mIiLE_0Yjch81lFQ%2Fviewform&cc_key='))
-    back_kb.add(types.InlineKeyboardButton('Назад', callback_data='return'))
     await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
                                 text=text, reply_markup=back_kb)
-    image = types.InputMediaPhoto('attach://images/schedule.jpg')
-    await bot.edit_message_media(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                 media=image)
+    await bot.send_photo(chat_id=callback_query.from_user.id, photo='images/schedule.jpg', reply_markup=back_kb)
 
 
 @dp.callback_query_handler(lambda c: c.data in ('wrong', 'right'))
