@@ -28,7 +28,8 @@ async def welcome_question_ask(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: c.data == 'where')
 async def fair_schema(callback_query: types.CallbackQuery):
-    await bot.send_photo(chat_id=callback_query.from_user.id, photo='images/where.jpg')
+    image = types.InputFile('images', 'where.jpg')
+    await bot.send_photo(chat_id=callback_query.from_user.id, photo=image)
 
 
 @dp.callback_query_handler(lambda c: c.data == 'master_class')
@@ -39,9 +40,8 @@ async def master_class(callback_query: types.CallbackQuery):
                                                                         '%2Fdocs.google.com%2Fforms%2Fd%2Fe'
                                                                         '%2F1FAIpQLSe41SL3EJsROLWtco7K2ACsX339S'
                                                                         'yIKn2mIiLE_0Yjch81lFQ%2Fviewform&cc_key='))
-    await bot.edit_message_text(chat_id=callback_query.from_user.id, message_id=callback_query.message.message_id,
-                                text=text, reply_markup=back_kb)
-    await bot.send_photo(chat_id=callback_query.from_user.id, photo='images/schedule.jpg', reply_markup=back_kb)
+    image = types.InputFile('images', filename='schedule.jpg')
+    await bot.send_photo(chat_id=callback_query.from_user.id, photo=image, reply_markup=back_kb)
 
 
 @dp.callback_query_handler(lambda c: c.data in ('wrong', 'right'))
